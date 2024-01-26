@@ -19,5 +19,19 @@ public class GameManager
     /// <summary>
     /// The color of the tiles
     /// </summary>
-    public static Color[] tileCols = { new Color(152, 152, 152, 255), new Color(238, 195, 58), new Color(238, 195, 58), new Color(1154, 0, 245, 255), new Color(75, 132, 223, 255), new Color(140, 0, 2), new Color(0, 238, 11), new Color(254, 0, 238, 255), new Color(254, 1, 5), new Color(204, 123, 7), new Color(13, 58, 67, 255), };
+    public static Color[] tileCols = {
+    new Color(152 / 255.0f, 152 / 255.0f, 152 / 255.0f, 1.0f),
+    new Color(238 / 255.0f, 195 / 255.0f, 58 / 255.0f, 1.0f),
+    new Color(238 / 255.0f, 195 / 255.0f, 58 / 255.0f, 1.0f),
+    new Color(154 / 255.0f, 0 / 255.0f, 245 / 255.0f, 1.0f),
+    new Color(75 / 255.0f, 132 / 255.0f, 223 / 255.0f, 1.0f),
+    new Color(140 / 255.0f, 0 / 255.0f, 2 / 255.0f, 1.0f),
+    new Color(0 / 255.0f, 238 / 255.0f, 11 / 255.0f, 1.0f),
+    new Color(254 / 255.0f, 0 / 255.0f, 238 / 255.0f, 1.0f),
+    new Color(254 / 255.0f, 1 / 255.0f, 5 / 255.0f, 1.0f),
+    new Color(204 / 255.0f, 123 / 255.0f, 7 / 255.0f, 1.0f),
+    new Color(13 / 255.0f, 58 / 255.0f, 67 / 255.0f, 1.0f)
+};
+    public static int numTiles = 23;
+    public static int nullWeight = 15;
 }

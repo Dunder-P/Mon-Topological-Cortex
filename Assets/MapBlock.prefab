@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 793666978967703453}
   - component: {fileID: 4230256532480974464}
+  - component: {fileID: 4032155235344887503}
   - component: {fileID: 5874780116084161513}
   m_Layer: 5
   m_Name: MapBlock
@@ -180,6 +181,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9036779963062474271}
   m_CullTransparentMesh: 1
+--- !u!114 &4032155235344887503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9036779963062474271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92fbfa9e715b0534a96f2c99938abb62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockText: {fileID: 7999969766174721118}
+  blockImage: {fileID: 5874780116084161513}
 --- !u!114 &5874780116084161513
 MonoBehaviour:
   m_ObjectHideFlags: 0
