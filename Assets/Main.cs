@@ -19,9 +19,10 @@ public class Main : MonoBehaviour
 
     public void genTiles()
     {
+        clearTiles();
         for (int i = 0; i < GameManager.numTiles; i++)
         {
-            tiles.Add(Instantiate(blockPrefab, new Vector3(Random.Range(100, 1820), Random.Range(100, 980), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+            tiles.Add(Instantiate(blockPrefab, new Vector3(100*Random.Range(2, 17), 100*Random.Range(2, 9), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
             tiles[i].setBlock(determineTile());
             counter = 0;
             for (int u = 0; u<i;u++)
@@ -29,7 +30,7 @@ public class Main : MonoBehaviour
                 counter = 0;
                 while (GetWorldSapceRect(tiles[i].blockImage.rectTransform).Overlaps(GetWorldSapceRect(tiles[u].blockImage.rectTransform))&&counter<10)
                 {
-                    tiles[i].transform.position = new Vector3(Random.Range(100, 1820), Random.Range(100, 980), 0);
+                    tiles[i].transform.position = new Vector3(100 * Random.Range(2, 17), 100 * Random.Range(2, 9), 0);
                     counter++;
                 }
             }
@@ -41,6 +42,15 @@ public class Main : MonoBehaviour
                 guaranteeTile(i);
             }
         }
+        genCorners();
+    }
+    public void clearTiles()
+    {
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            Destroy(tiles[i].gameObject);
+        }
+        tiles = new List<MapBlock>();
     }
     // Update is called once per frame
     void Update()
@@ -56,6 +66,21 @@ public class Main : MonoBehaviour
         }
         tiles[replacement].setBlock(id);
     }
+    public void genCorners()
+    {
+        int i = tiles.Count;
+        tiles.Add(Instantiate(blockPrefab, new Vector3(50, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles[i].setBlock(determineTile());
+        i++;
+        tiles.Add(Instantiate(blockPrefab, new Vector3(50, 1000, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles[i].setBlock(determineTile());
+        i++;
+        tiles.Add(Instantiate(blockPrefab, new Vector3(1870, 1000, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles[i].setBlock(determineTile());
+        i++;
+        tiles.Add(Instantiate(blockPrefab, new Vector3(1870, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles[i].setBlock(determineTile());
+    }
     public int determineTile()
     {
         int id = Random.Range(-GameManager.nullWeight, GameManager.tileNames.Length);
@@ -64,7 +89,7 @@ public class Main : MonoBehaviour
             return 0;
         }
         int p = countTiles(id);
-        if(p>GameManager.limits[id]&&GameManager.limits[id]!= 0)
+        if(p>=GameManager.limits[id]&&GameManager.limits[id]!= 0)
         {
             return determineTile();
         }
