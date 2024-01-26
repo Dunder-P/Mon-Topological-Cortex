@@ -36,7 +36,7 @@ public class Main : MonoBehaviour
         }
         for (int i = 0; i < GameManager.guarGen.Length; i++)
         {
-            if (GameManager.guarGen[i]&&countTiles(i)<1)
+            while (countTiles(i)< GameManager.guarNum[i])
             {
                 guaranteeTile(i);
             }
@@ -50,7 +50,7 @@ public class Main : MonoBehaviour
     public void guaranteeTile(int id)
     {
         int replacement = Random.Range(0, tiles.Count);
-        if(GameManager.guarGen[tiles[replacement].id]&&countTiles(tiles[replacement].id) ==1)
+        if(countTiles(tiles[replacement].id) < GameManager.guarNum[tiles[replacement].id])
         {
             counter++;
             if(counter>90)

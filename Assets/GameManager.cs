@@ -16,6 +16,7 @@ public class GameManager
     /// Whether to force a tile to spawn in if none exist after generation
     /// </summary>
     public static bool[] guarGen = { false, true, false, false, false, false, false, true, false, false, false};
+    public static int[] guarNum = { 0, 1, 0, 0, 2, 0, 0, 0, 23, 0, 1 };
     /// <summary>
     /// The color of the tiles
     /// </summary>
@@ -32,6 +33,6 @@ public class GameManager
     new Color(204 / 255.0f, 123 / 255.0f, 7 / 255.0f, 1.0f),
     new Color(13 / 255.0f, 58 / 255.0f, 67 / 255.0f, 1.0f)
 };
-    public static int numTiles = 23;
+    public static int numTiles = 50;
     public static int nullWeight = 7;
 }
