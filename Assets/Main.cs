@@ -50,20 +50,11 @@ public class Main : MonoBehaviour
     public void guaranteeTile(int id)
     {
         int replacement = Random.Range(0, tiles.Count);
-        if(countTiles(tiles[replacement].id) < GameManager.guarNum[tiles[replacement].id])
+        while(countTiles(tiles[replacement].id) <= GameManager.guarNum[tiles[replacement].id])
         {
-            counter++;
-            if(counter>90)
-            {
-                return;
-            }
-            guaranteeTile(id);
-            return;
+            replacement = Random.Range(0, tiles.Count);
         }
-        else
-        {
-            tiles[replacement].setBlock(id);
-        }
+        tiles[replacement].setBlock(id);
     }
     public int determineTile()
     {
