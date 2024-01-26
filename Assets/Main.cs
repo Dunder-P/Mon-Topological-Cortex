@@ -24,15 +24,15 @@ public class Main : MonoBehaviour
             tiles.Add(Instantiate(blockPrefab, new Vector3(Random.Range(100, 1820), Random.Range(100, 980), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
             tiles[i].setBlock(determineTile());
             counter = 0;
-            for (int u = 0; u<tiles.Count-1;u++)
+            for (int u = 0; u<i;u++)
             {
-                while (tiles[i].blockImage.rectTransform.rect.Overlaps(tiles[u].blockImage.rectTransform.rect)&&counter<188000)
+                counter = 0;
+                while (GetWorldSapceRect(tiles[i].blockImage.rectTransform).Overlaps(GetWorldSapceRect(tiles[u].blockImage.rectTransform))&&counter<10)
                 {
                     tiles[i].transform.position = new Vector3(Random.Range(100, 1820), Random.Range(100, 980), 0);
                     counter++;
                 }
             }
-            print(counter);
         }
         for (int i = 0; i < GameManager.guarGen.Length; i++)
         {
@@ -91,5 +91,17 @@ public class Main : MonoBehaviour
             }
         }
         return count;
+    }
+    /// <summary>
+    /// Code by lassade on Unity Forums
+    /// </summary>
+    /// <param name="rt"></param>
+    /// <returns></returns>
+    Rect GetWorldSapceRect(RectTransform rt)
+    {
+        var r = rt.rect;
+        r.center = rt.TransformPoint(r.center);
+        r.size = rt.TransformVector(r.size);
+        return r;
     }
 }

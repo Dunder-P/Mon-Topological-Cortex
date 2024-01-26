@@ -11,11 +11,11 @@ public class GameManager
     /// <summary>
     /// A limit on how many can spawn in (ie: reroll if at the limit)
     /// </summary>
-    public static int[] limits = { 0,1,0,1,2,0,0,0,0,0,1};
+    public static int[] limits = { 0,1,0,1,2,0,0,1,0,0,1};
     /// <summary>
     /// Whether to force a tile to spawn in if none exist after generation
     /// </summary>
-    public static bool[] guarGen = { false, true, false, false, false, false, false, false, false, false, false};
+    public static bool[] guarGen = { false, true, false, false, false, false, false, true, false, false, false};
     /// <summary>
     /// The color of the tiles
     /// </summary>
@@ -33,5 +33,5 @@ public class GameManager
     new Color(13 / 255.0f, 58 / 255.0f, 67 / 255.0f, 1.0f)
 };
     public static int numTiles = 23;
-    public static int nullWeight = 15;
+    public static int nullWeight = 7;
 }
