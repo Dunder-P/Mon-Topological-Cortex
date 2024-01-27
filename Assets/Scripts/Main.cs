@@ -22,18 +22,28 @@ public class Main : MonoBehaviour
         clearTiles();
         for (int i = 0; i < GameManager.numTiles; i++)
         {
-            tiles.Add(Instantiate(blockPrefab, new Vector3(100*Random.Range(2, 17), 100*Random.Range(2, 9), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+            tiles.Add(Instantiate(blockPrefab, new Vector3(200*Random.Range(1, 9), 200*Random.Range(1, 5), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
             tiles[i].setBlock(determineTile());
             counter = 0;
-            for (int u = 0; u<i;u++)
+            bool foundEmpty = false;
+            while(!foundEmpty)
             {
                 counter = 0;
-                while (GetWorldSapceRect(tiles[i].blockImage.rectTransform).Overlaps(GetWorldSapceRect(tiles[u].blockImage.rectTransform))&&counter<10)
+                tiles[i].transform.position = new Vector3(200 * Random.Range(1, 9), 200 * Random.Range(1, 5), 0);
+                for (int u = 0; u < i; u++)
                 {
-                    tiles[i].transform.position = new Vector3(100 * Random.Range(2, 17), 100 * Random.Range(2, 9), 0);
-                    counter++;
+                    if (GetWorldSapceRect(tiles[i].blockImage.rectTransform).Overlaps(GetWorldSapceRect(tiles[u].blockImage.rectTransform)))
+                    {
+                        counter++;
+                        u = 10000;
+                    }
+                }
+                if(counter==0)
+                {
+                    foundEmpty = true;
                 }
             }
+
         }
         for (int i = 0; i < GameManager.guarGen.Length; i++)
         {
@@ -69,16 +79,16 @@ public class Main : MonoBehaviour
     public void genCorners()
     {
         int i = tiles.Count;
-        tiles.Add(Instantiate(blockPrefab, new Vector3(50, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles.Add(Instantiate(blockPrefab, new Vector3(75, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
         tiles[i].setBlock(determineTile());
         i++;
-        tiles.Add(Instantiate(blockPrefab, new Vector3(50, 1000, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles.Add(Instantiate(blockPrefab, new Vector3(75, 1000, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
         tiles[i].setBlock(determineTile());
         i++;
-        tiles.Add(Instantiate(blockPrefab, new Vector3(1870, 1000, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles.Add(Instantiate(blockPrefab, new Vector3(1850, 1000, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
         tiles[i].setBlock(determineTile());
         i++;
-        tiles.Add(Instantiate(blockPrefab, new Vector3(1870, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+        tiles.Add(Instantiate(blockPrefab, new Vector3(1850, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
         tiles[i].setBlock(determineTile());
     }
     public int determineTile()

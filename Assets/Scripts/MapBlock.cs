@@ -16,7 +16,7 @@ public class MapBlock : MonoBehaviour
     }
     public void setBlock(int idN)
     {
-        blockImage.color = GameManager.tileCols[idN];
+        blockImage.sprite = GameManager.tiles[idN];
         blockText.text = GameManager.tileNames[idN];
         id = idN;
     }

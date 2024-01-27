@@ -16,9 +16,9 @@ public class GameManager
     /// Whether to force a tile to spawn in if none exist after generation
     /// </summary>
     public static bool[] guarGen = { false, true, false, false, false, false, false, true, false, false, false};
-    public static int[] guarNum = { 0, 1, 0, 0, 2, 0, 0, 0, 6, 0, 1 };
+    public static int[] guarNum = { 0, 1, 0, 0, 2, 0, 0, 1, 0, 0, 1 };
     /// <summary>
-    /// The color of the tiles
+    /// The color of the tiles. NO LONGER USED
     /// </summary>
     public static Color[] tileCols = {
     new Color(152 / 255.0f, 152 / 255.0f, 152 / 255.0f, 1.0f),
@@ -35,4 +35,5 @@ public class GameManager
 };
     public static int numTiles = 18;
     public static int nullWeight = 7;
+    public static Sprite[] tiles = Resources.LoadAll<Sprite>("Tiles/");
 }
