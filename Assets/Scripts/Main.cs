@@ -10,23 +10,26 @@ public class Main : MonoBehaviour
     public List<MapBlock> tiles;
     public GameObject theCanvas;
     public List<int> addedTiles;
+    public Dictionary<MapBlock, bool> hasConnection;
     private int counter = 0;
     // Start is called before the first frame update
     void Start()
     {
+        Screen.SetResolution(1920, 1080, false);
         genTiles();
     }
 
     public void genTiles()
     {
+        #region generation
         clearTiles();
         for (int i = 0; i < GameManager.numTiles; i++)
         {
-            tiles.Add(Instantiate(blockPrefab, new Vector3(200*Random.Range(1, 9), 200*Random.Range(1, 5), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
+            tiles.Add(Instantiate(blockPrefab, new Vector3(200 * Random.Range(1, 9), 200 * Random.Range(1, 5), 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
             tiles[i].setBlock(determineTile());
             counter = 0;
             bool foundEmpty = false;
-            while(!foundEmpty)
+            while (!foundEmpty)
             {
                 counter = 0;
                 tiles[i].transform.position = new Vector3(200 * Random.Range(1, 9), 200 * Random.Range(1, 5), 0);
@@ -38,7 +41,7 @@ public class Main : MonoBehaviour
                         u = 10000;
                     }
                 }
-                if(counter==0)
+                if (counter == 0)
                 {
                     foundEmpty = true;
                 }
@@ -47,12 +50,80 @@ public class Main : MonoBehaviour
         }
         for (int i = 0; i < GameManager.guarGen.Length; i++)
         {
-            while (countTiles(i)< GameManager.guarNum[i])
+            while (countTiles(i) < GameManager.guarNum[i])
             {
                 guaranteeTile(i);
             }
         }
         genCorners();
+        #endregion
+        #region line gen
+        for (int i = 0; i < tiles.Count-4; i++)
+        {
+            int kill = 0;
+            GameObject q = Instantiate(blockPrefab, tiles[i].transform.position, transform.rotation, theCanvas.transform);
+            float xmod = 200 * Random.Range(-1, 2);
+            float ymod = 200 * Random.Range(-1, 2);
+            q.transform.position = q.transform.position + new Vector3(xmod, ymod);
+            while (!checkOverlap(q.GetComponent<MapBlock>()))
+            {
+                if((q.transform.position.x < 1920 && q.transform.position.x > 0 && q.transform.position.y < 1080 && q.transform.position.y > 0))
+                {
+                    q.transform.position = q.transform.position + new Vector3(xmod, ymod);
+                }
+                else
+                {
+                    if (kill>1000)
+                    {
+                        Destroy(q);
+                        int r = Random.Range(0, tiles.Count);
+                        while(r==i)
+                        {
+                            r = Random.Range(0, tiles.Count);
+                        }
+                        tiles[i].drawLine(tiles[r]);
+                        break;
+                    }
+                    xmod = 200 * Random.Range(-1, 2);
+                    ymod = 200 * Random.Range(-1, 2);
+                    q.transform.position = tiles[i].transform.position + new Vector3(xmod, ymod);
+                }
+                if(checkOverlap(q.GetComponent<MapBlock>())&&checkOverlap(tiles[i]))
+                {
+                    xmod = 200 * Random.Range(-1, 2);
+                    ymod = 200 * Random.Range(-1, 2);
+                    q.transform.position = tiles[i].transform.position + new Vector3(xmod, ymod);
+                }
+            }
+            if ((checkOverlap(q.GetComponent<MapBlock>(), true) == tiles[i])||q.transform.position.y<=0)
+            {
+                int r = Random.Range(0, tiles.Count);
+                while (r == i)
+                {
+                    r = Random.Range(0, tiles.Count);
+                }
+                tiles[i].drawLine(tiles[r]);
+            }
+            else if (checkOverlap(q.GetComponent<MapBlock>()))
+            {
+                tiles[i].drawLine(q.GetComponent<MapBlock>());
+            }
+            Destroy(q);
+
+        }
+        int ra = Random.Range(0, tiles.Count);
+        while (ra >= tiles.Count - 4)
+        {
+            ra = Random.Range(0, tiles.Count);
+        }
+        tiles[tiles.Count - 4].drawLine(tiles[tiles.Count - 3], tiles[ra]);
+        tiles[tiles.Count - 3].drawLine(tiles[tiles.Count - 2], tiles[ra]);
+        tiles[tiles.Count - 2].drawLine(tiles[tiles.Count - 1], tiles[ra]);
+
+        tiles[tiles.Count - 1].drawLine(tiles[tiles.Count - 4], tiles[ra]);
+        #endregion
+        ScreenCapture.CaptureScreenshot(Random.state.ToString() + Random.Range(0,1000000) + ".png");
+        Screen.SetResolution(Screen.resolutions[0].width, Screen.resolutions[0].height, false);
     }
     public void clearTiles()
     {
@@ -128,6 +199,28 @@ public class Main : MonoBehaviour
         var r = rt.rect;
         r.center = rt.TransformPoint(r.center);
         r.size = rt.TransformVector(r.size);
+        return r;
+    }
+    public bool checkOverlap(MapBlock r)
+    {
+        for (int u = 0; u < tiles.Count; u++)
+        {
+            if (GetWorldSapceRect(r.blockImage.rectTransform).Overlaps(GetWorldSapceRect(tiles[u].blockImage.rectTransform)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public MapBlock checkOverlap(MapBlock r, bool returnM)
+    {
+        for (int u = 0; u < tiles.Count; u++)
+        {
+            if (GetWorldSapceRect(r.blockImage.rectTransform).Overlaps(GetWorldSapceRect(tiles[u].blockImage.rectTransform)))
+            {
+                return tiles[u];
+            }
+        }
         return r;
     }
 }
