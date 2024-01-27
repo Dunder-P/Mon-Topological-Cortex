@@ -16,7 +16,7 @@ public class Main : MonoBehaviour
     private int counter = 0;
 
     public GameObject settingsMenu;
-    public Image editingTileImage;
+    public Image editingTileImage, renderiMage;
     public TMP_InputField guarGen1, minGen1, nullWeight1, tileSize1;
     private int currEdit = 1;
     // Start is called before the first frame update
@@ -333,5 +333,15 @@ public class Main : MonoBehaviour
             r += GameManager.guarNum[i];
         }
         return r;
+    }
+    public void toggleLinesLines()
+    {
+        renderiMage.gameObject.SetActive(!renderiMage.IsActive());
+        string peath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ("MonOtoTopologicalCortext/" + UnityEngine.Random.seed + UnityEngine.Random.Range(0, 1000000) + ".png"));
+        if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "MonOtoTopologicalCortext/")))
+        {
+            Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "MonOtoTopologicalCortext/"));
+        }
+        ScreenCapture.CaptureScreenshot(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ("MonOtoTopologicalCortext/" + UnityEngine.Random.seed + UnityEngine.Random.Range(0, 1000000) + ".png")));
     }
 }
