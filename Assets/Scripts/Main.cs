@@ -8,16 +8,35 @@ using System.IO;
 
 public class Main : MonoBehaviour
 {
+    /// <summary>
+    /// The prefab to clone for all map blocks.
+    /// </summary>
     public GameObject blockPrefab;
+    /// <summary>
+    /// A list of all created tiles
+    /// </summary>
     public List<MapBlock> tiles;
+    /// <summary>
+    /// The canvas to add tiles to
+    /// </summary>
     public GameObject theCanvas;
-    public List<int> addedTiles;
-    public Dictionary<MapBlock, bool> hasConnection;
+    /// <summary>
+    /// Private counter used by various methods to prevent infinite loops
+    /// </summary>
     private int counter = 0;
 
+    /// <summary>
+    /// The Gameobject containing the settings menu
+    /// </summary>
     public GameObject settingsMenu;
+    /// <summary>
+    /// The image for the editing Tile/render Image
+    /// </summary>
     public Image editingTileImage, renderiMage;
     public TMP_InputField guarGen1, minGen1, nullWeight1, tileSize1;
+    /// <summary>
+    /// The current tile being edited.
+    /// </summary>
     private int currEdit = 1;
     // Start is called before the first frame update
     void Start()
@@ -26,7 +45,9 @@ public class Main : MonoBehaviour
         Screen.SetResolution(1920, 1080, false);
         genTiles();
     }
-
+    /// <summary>
+    /// Generates all tiles based off the info in Game Manager.
+    /// </summary>
     public void genTiles()
     {
         #region generation
@@ -145,6 +166,9 @@ public class Main : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// Clears all tiles on the map
+    /// </summary>
     public void clearTiles()
     {
         for (int i = 0; i < tiles.Count; i++)
@@ -158,6 +182,9 @@ public class Main : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Sets up the arrows on the corners of the map.
+    /// </summary>
     public void setLoop()
     {
         int i = UnityEngine.Random.Range(0, 4);
@@ -185,6 +212,11 @@ public class Main : MonoBehaviour
             tiles[tiles.Count - 1].setArrow(true, !startRed, false);
         }
     }
+    /// <summary>
+    /// Generates a specific tile over an existing one.
+    /// Will not generate over another guaranteed tile.
+    /// </summary>
+    /// <param name="id">The id of the tile to generate</param>
     public void guaranteeTile(int id)
     {
         int replacement = UnityEngine.Random.Range(0, tiles.Count);
@@ -194,6 +226,9 @@ public class Main : MonoBehaviour
         }
         tiles[replacement].setBlock(id);
     }
+    /// <summary>
+    /// Generates the 4 corner tiles
+    /// </summary>
     public void genCorners()
     {
         int i = tiles.Count;
@@ -209,6 +244,11 @@ public class Main : MonoBehaviour
         tiles.Add(Instantiate(blockPrefab, new Vector3(1850, 50, 0), transform.rotation, theCanvas.transform).GetComponent<MapBlock>());
         tiles[i].setBlock(determineTile());
     }
+    /// <summary>
+    /// Determines what tile will be generated.
+    /// Rerolls if a tile chosen is over the limit.
+    /// </summary>
+    /// <returns>The id of a valid tile</returns>
     public int determineTile()
     {
         int id = UnityEngine.Random.Range(-GameManager.nullWeight, GameManager.tileNames.Length);
@@ -224,6 +264,11 @@ public class Main : MonoBehaviour
         return id;
     }
 
+    /// <summary>
+    /// Counts the number of a specific tile given an id
+    /// </summary>
+    /// <param name="id">ID of the tile to count</param>
+    /// <returns>The number of tiles with the input ID.</returns>
     public int countTiles(int id)
     {
         int count = 0;
@@ -237,10 +282,11 @@ public class Main : MonoBehaviour
         return count;
     }
     /// <summary>
-    /// Code by lassade on Unity Forums
+    /// Code by lassade on Unity Forums.
+    /// Takes in a rect and returns that rect in worldspace
     /// </summary>
-    /// <param name="rt"></param>
-    /// <returns></returns>
+    /// <param name="rt">Rect to get in world space</param>
+    /// <returns>The rect in world space</returns>
     Rect GetWorldSapceRect(RectTransform rt)
     {
         var r = rt.rect;
@@ -248,6 +294,11 @@ public class Main : MonoBehaviour
         r.size = rt.TransformVector(r.size);
         return r;
     }
+    /// <summary>
+    /// Checks if a tile overlaps another tile.
+    /// </summary>
+    /// <param name="r">The mapblock to check</param>
+    /// <returns>If there is an overlap</returns>
     public bool checkOverlap(MapBlock r)
     {
         for (int u = 0; u < tiles.Count; u++)
@@ -259,6 +310,13 @@ public class Main : MonoBehaviour
         }
         return false;
     }
+    /// <summary>
+    /// Checks if a tile overlaps another tile and then returns that tile.
+    /// Returns the input if no overlap
+    /// </summary>
+    /// <param name="r">the map block to check</param>
+    /// <param name="returnM">Does nothing</param>
+    /// <returns>The overlapping map block</returns>
     public MapBlock checkOverlap(MapBlock r, bool returnM)
     {
         for (int u = 0; u < tiles.Count; u++)
@@ -271,6 +329,10 @@ public class Main : MonoBehaviour
         return r;
     }
 
+    /// <summary>
+    /// Loads a tile to be edited in settings
+    /// </summary>
+    /// <param name="id">The id of the tile to edit</param>
     public void loadBlockSettings(int id)
     {
         currEdit = id;
@@ -278,6 +340,10 @@ public class Main : MonoBehaviour
         guarGen1.text = GameManager.guarNum[currEdit].ToString();
         minGen1.text = GameManager.limits[currEdit].ToString();
     }
+    /// <summary>
+    /// Opens/closes the settings menu
+    /// </summary>
+    /// <param name="open">If true, the settings menu will be opened.</param>
     public void openCloseSettings(bool open)
     {
         settingsMenu.SetActive(open);
@@ -291,7 +357,14 @@ public class Main : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Changes the value of a certain variable in Game Manager.
+    /// Guaranteed number of tiles will be clamped down to the smallest value it can without going over the max of 15 for all tiles combined.
+    /// Guaranteed number will always be less than or equal to the limit.
+    /// null weight can't go over 10000
+    /// max number of tiles can't go over 32
+    /// </summary>
+    /// <param name="type">Which variable to change, 0 = the guarNum of active tile, 1 = the limit of active tile, 2 = null weight, 3 = max tiles.</param>
     public void changeValue( int type)
     {
         switch(type)
@@ -325,6 +398,10 @@ public class Main : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculates the total number of tiles guaranteed to generate
+    /// </summary>
+    /// <returns>the total number of tiles guaranteed to generate</returns>
     public int calcTotalGuar()
     {
         int r = 0;
@@ -334,6 +411,10 @@ public class Main : MonoBehaviour
         }
         return r;
     }
+
+    /// <summary>
+    /// Shows or hides the connecting lines between tiles and then takes a new screenshot.
+    /// </summary>
     public void toggleLinesLines()
     {
         renderiMage.gameObject.SetActive(!renderiMage.IsActive());
