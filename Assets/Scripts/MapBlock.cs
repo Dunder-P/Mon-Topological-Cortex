@@ -6,9 +6,10 @@ using TMPro;
 
 public class MapBlock : MonoBehaviour
 {
-    public TextMeshProUGUI blockText;
+    public TextMeshProUGUI blockText, leftText, rightText;
     public Image blockImage;
     public int id = 0;
+    public Color redCol, blueCol;
     private Vector3[] poindts = new Vector3[2];
     public bool drawnLine = false;
     private LineRenderer myLine;
@@ -45,6 +46,24 @@ public class MapBlock : MonoBehaviour
         poindts[1] = second.transform.position;
         myLine.SetPositions(points);
         drawnLine = true;
+    }
+    public void setArrow(bool right, bool red, bool ouet)
+    {
+        string txt = right ? "->" : "<-";
+        if(!ouet)
+        {
+            rightText.gameObject.SetActive(true);
+            rightText.color = red ? redCol : blueCol;
+            rightText.text = txt;
+        }
+        else
+        {
+            leftText.gameObject.SetActive(true);
+            leftText.color = red ? redCol : blueCol;
+            leftText.text = txt;
+        }
+
+
     }
     // Update is called once per frame
     void Update()

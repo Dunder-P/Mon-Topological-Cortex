@@ -124,6 +124,9 @@ public class Main : MonoBehaviour
 
         tiles[tiles.Count - 1].drawLine(tiles[tiles.Count - 4], tiles[ra]);
         #endregion
+        #region loop
+        setLoop();
+        #endregion
         string peath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ("MonOtoTopologicalCortext/" + UnityEngine.Random.seed+UnityEngine.Random.Range(0, 1000000) + ".png"));
         if(!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "MonOtoTopologicalCortext/")))
          {
@@ -148,6 +151,33 @@ public class Main : MonoBehaviour
     void Update()
     {
         
+    }
+    public void setLoop()
+    {
+        int i = UnityEngine.Random.Range(0, 4);
+        bool startRed = i < 2 ? true : false;
+        if(i%2==0)
+        {
+            tiles[tiles.Count - 4].setArrow(false, startRed, true);
+           tiles[tiles.Count - 3].setArrow(true, !startRed, true);
+        }
+        else
+        {
+            tiles[tiles.Count - 4].setArrow(true, startRed, true);
+            tiles[tiles.Count - 3].setArrow(false, !startRed, true);
+        }
+        int ni = UnityEngine.Random.Range(0, 4);
+        startRed = ni < 2 ? true : false;
+        if (i % 2 == 0)
+        {
+            tiles[tiles.Count - 2].setArrow(true, startRed, false);
+            tiles[tiles.Count - 1].setArrow(false, !startRed, false);
+        }
+        else
+        {
+            tiles[tiles.Count - 2].setArrow(false, startRed, false);
+            tiles[tiles.Count - 1].setArrow(true, !startRed, false);
+        }
     }
     public void guaranteeTile(int id)
     {
