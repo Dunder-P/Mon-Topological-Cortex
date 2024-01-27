@@ -33,6 +33,7 @@ public class GameManager
     new Color(204 / 255.0f, 123 / 255.0f, 7 / 255.0f, 1.0f),
     new Color(13 / 255.0f, 58 / 255.0f, 67 / 255.0f, 1.0f)
 };
+    public static int totalGuar = 5;
     public static int numTiles = 23;
     public static int nullWeight = 7;
     public static Sprite[] tiles = Resources.LoadAll<Sprite>("Tiles/");

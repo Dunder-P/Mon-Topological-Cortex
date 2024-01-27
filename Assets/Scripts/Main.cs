@@ -14,9 +14,15 @@ public class Main : MonoBehaviour
     public List<int> addedTiles;
     public Dictionary<MapBlock, bool> hasConnection;
     private int counter = 0;
+
+    public GameObject settingsMenu;
+    public Image editingTileImage;
+    public TMP_InputField guarGen1, minGen1, nullWeight1, tileSize1;
+    private int currEdit = 1;
     // Start is called before the first frame update
     void Start()
     {
+        openCloseSettings(false);
         Screen.SetResolution(1920, 1080, false);
         genTiles();
     }
@@ -261,6 +267,70 @@ public class Main : MonoBehaviour
             {
                 return tiles[u];
             }
+        }
+        return r;
+    }
+
+    public void loadBlockSettings(int id)
+    {
+        currEdit = id;
+        editingTileImage.sprite = GameManager.tiles[currEdit];
+        guarGen1.text = GameManager.guarNum[currEdit].ToString();
+        minGen1.text = GameManager.limits[currEdit].ToString();
+    }
+    public void openCloseSettings(bool open)
+    {
+        settingsMenu.SetActive(open);
+        if(open)
+        {
+            editingTileImage.sprite = GameManager.tiles[currEdit];
+            guarGen1.text = GameManager.guarNum[currEdit].ToString();
+            minGen1.text = GameManager.limits[currEdit].ToString();
+            nullWeight1.text = GameManager.nullWeight.ToString();
+            tileSize1.text = GameManager.numTiles.ToString();
+        }
+    }
+
+
+    public void changeValue( int type)
+    {
+        switch(type)
+        {
+            case 0:
+                int p = calcTotalGuar() - GameManager.guarNum[currEdit];
+                int max = 15 - p;
+                if(max<0)
+                {
+                    max = 0;
+                }
+                GameManager.guarNum[currEdit] = Math.Clamp(int.Parse(guarGen1.text),0,max);
+                if (GameManager.guarNum[currEdit]> GameManager.limits[currEdit])
+                {
+                    GameManager.limits[currEdit] = GameManager.guarNum[currEdit];
+                }
+                break;
+            case 1:
+                GameManager.limits[currEdit] = Math.Clamp(int.Parse(minGen1.text),0,32);
+                if (GameManager.guarNum[currEdit] > GameManager.limits[currEdit])
+                {
+                    GameManager.limits[currEdit] = GameManager.guarNum[currEdit];
+                }
+                break;
+            case 2:
+                GameManager.nullWeight = Math.Clamp(int.Parse(nullWeight1.text),0,10000);
+                break;
+            case 3:
+                GameManager.numTiles = Math.Clamp(int.Parse(tileSize1.text),0,32);
+                break;
+        }
+    }
+
+    public int calcTotalGuar()
+    {
+        int r = 0;
+        for(int i = 0; i<GameManager.guarNum.Length;i++)
+        {
+            r += GameManager.guarNum[i];
         }
         return r;
     }
