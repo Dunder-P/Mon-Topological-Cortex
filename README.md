@@ -2,7 +2,7 @@ Generates maps intended to be played in a format similar to the following video:
 
 Tile assets created by JayMonoto, who also asked me to create this program.
 
-When a map is generated it will automatically be saved in the user's pictures folder.
+When a map is generated it will automatically be saved in the user's pictures folder (C:\Users\YOURUSERNAME\Pictures\MonOtoTopologicalCortext).
 
 To adjust the specifications of the map click the girl on the right where you can adjust variables for each tiles, and global variables such as the null weight and number of tiles.
 To regenerate a map, click the girl on the left.
